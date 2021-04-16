@@ -1,0 +1,22 @@
+#DB config
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/good_job_bot?useUnicode=true&characterEncoding=utf8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+#flyway config
+  flyway:
+    url: jdbc:mysql://localhost:3306
+    schemas: good_job_bot
+    user: root
+    password: root
+
+#Telegram bot config
+telegramBot:
+  username:
+  token:
+
