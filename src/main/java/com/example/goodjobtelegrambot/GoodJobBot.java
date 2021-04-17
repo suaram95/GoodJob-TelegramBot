@@ -1,22 +1,22 @@
 package com.example.goodjobtelegrambot;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import lombok.Setter;
+import org.telegram.telegrambots.bots.TelegramWebhookBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class GoodJobBot extends TelegramLongPollingBot {
+@Setter
+public class GoodJobBot extends TelegramWebhookBot {
 
-    @Value("${telegramBot.username}")
-    private String username;
-
-    @Value("${telegramBot.token}")
+    private String webHookPath;
+    private String userName;
     private String token;
 
     @Override
     public String getBotUsername() {
-        return username;
+        return userName;
     }
 
     @Override
@@ -25,18 +25,21 @@ public class GoodJobBot extends TelegramLongPollingBot {
     }
 
     @Override
-    public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            SendMessage message = SendMessage.builder()
-                    .chatId(String.valueOf(update.getMessage().getChatId()))
-                    .text(update.getMessage().getText())
-                    .build();
+    public String getBotPath() {
+        return webHookPath;
+    }
+
+    @Override
+    public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
+        if (update.getMessage() != null && update.getMessage().hasText()) {
+            String chat_id = String.valueOf(update.getMessage().getChatId());
+
             try {
-                execute(message);
+                execute(new SendMessage(chat_id, "Hi " + update.getMessage().getText()));
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
         }
+        return null;
     }
-
 }
