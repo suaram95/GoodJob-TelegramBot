@@ -16,7 +16,7 @@ spring:
     password: root
 
 #Telegram bot config
-telegramBot:
-  username:
+telegrambot:
+  userName:
   token:
-
+  webhookPath:
